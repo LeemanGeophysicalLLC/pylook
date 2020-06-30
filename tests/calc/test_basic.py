@@ -6,7 +6,7 @@
 
 import numpy as np
 
-from pylook.calc import (zero)
+from pylook.calc import (remove_offset, zero)
 from pylook.testing import assert_array_almost_equal
 from pylook.units import units
 
@@ -84,5 +84,16 @@ def test_zero_value_after_mode():
     result = zero(data, 5, value=1.5 * units('mm'), mode='after')
 
     truth = np.array([-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 1.5, 1.5, 1.5, 1.5]) * units('mm')
+
+    assert_array_almost_equal(result, truth)
+
+
+def test_remove_offset():
+    """Test the remove offset function."""
+    data = np.array([0, 1, 2, 4, 4, 10, 10, 11, 12, 13, 14]) * units('mm')
+
+    result = remove_offset(data, 4, 6)
+
+    truth = np.array([0, 1, 2, 4, 4, 4, 4, 5, 6, 7, 8]) * units('mm')
 
     assert_array_almost_equal(result, truth)

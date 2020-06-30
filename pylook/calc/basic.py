@@ -59,3 +59,29 @@ def zero(data, zero_idx, window=0, value=0, mode='at'):
         data[zero_idx:] = data[zero_idx]
 
     return data
+
+
+@exporter.export
+def remove_offset(data, start_idx, end_idx):
+    """
+    Remove offsets in the data.
+
+    Parameters
+    ----------
+    data : `pint.Quantity`
+        Date to be operated upon.
+    start_idx : int
+        Index that marks the start of the offset.
+    end_idx : int
+        Index that marks the end of the offset.
+
+    Returns
+    -------
+    data : `pint.Quantity`
+        Data with offset applied.
+    """
+    # Set the data after the offset to the data minus the offset
+    offset = data[end_idx] - data[start_idx]
+    data[start_idx + 1:] = data[start_idx + 1:] - offset
+    data[start_idx: end_idx + 1] = data[start_idx]
+    return data
