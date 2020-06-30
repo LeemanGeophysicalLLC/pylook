@@ -122,3 +122,16 @@ def test_elastic_correction_linear_different_units():
     truth = np.array([940000, 1890000, 2840000, 3790000, 4740000,
                       5690000, 6640000, 7590000, 8540000, 9490000]) * units('micron')
     assert_array_almost_equal(result, truth)
+
+
+def test_elastic_correction_quadratic_same_units():
+    """Test the elastic correction with all consistent units given."""
+    coeffs = [2 * units('mm/kN**2'), 5 * units('mm/kN'), 10 * units('mm')]
+    loads = np.arange(10, 101, 10) * units('kN')
+    displacements = (np.arange(1, 11) * 1000) * units('mm')
+
+    result = elastic_correction(loads, displacements, coeffs)
+
+    truth = np.array([740, 1090, 1040, 590, -260, -1510, -3160, -5210,
+                      -7660, -10510]) * units('mm')
+    assert_array_almost_equal(result, truth)
