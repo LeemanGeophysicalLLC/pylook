@@ -85,3 +85,42 @@ def remove_offset(data, start_idx, end_idx):
     data[start_idx + 1:] = data[start_idx + 1:] - offset
     data[start_idx: end_idx + 1] = data[start_idx]
     return data
+
+
+@exporter.export
+def elastic_correction(load, displacement, coeffs):
+    """
+    Perform an elastic correction on a single axis of data.
+
+    Parameters
+    ----------
+    load : `pint.Quantity`
+        Load/Force data
+    displacement : `pint.Quantity`
+        Displacement data
+    coeffs : list
+        list of coefficients from highest power to lowest.
+
+    Returns
+    -------
+    displacement : `pint.Quantity`
+        Displacement with the elastic correction applied
+    """
+    # store in incoming displacement unit
+    displacement_units_incoming = displacement.units
+
+    # convert everythign to base units, then drop them
+    load = load.to_base_units().m
+    displacement = displacement.to_base_units()
+    displacement_base_units = displacement.units
+    displacement = displacement.m
+    coeffs = [c.to_base_units().m for c in coeffs]
+
+    # Find the elastic correction
+    elastic_correction = np.polyval(coeffs, load)
+
+    # Determine the final elastic corrected displacement and attach the base units
+    elastic_corrected_displacement = ((displacement - elastic_correction)
+                                      * displacement_base_units)
+
+    return elastic_corrected_displacement.to(displacement_units_incoming)

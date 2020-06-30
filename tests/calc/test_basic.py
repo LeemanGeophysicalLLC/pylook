@@ -6,7 +6,7 @@
 
 import numpy as np
 
-from pylook.calc import (remove_offset, zero)
+from pylook.calc import (elastic_correction, remove_offset, zero)
 from pylook.testing import assert_array_almost_equal
 from pylook.units import units
 
@@ -96,4 +96,29 @@ def test_remove_offset():
 
     truth = np.array([0, 1, 2, 4, 4, 4, 4, 5, 6, 7, 8]) * units('mm')
 
+    assert_array_almost_equal(result, truth)
+
+
+def test_elastic_correction_linear_same_units():
+    """Test the elastic correction with all consistent units given."""
+    coeffs = [5 * units('mm/kN'), 10 * units('mm')]
+    loads = np.arange(10, 101, 10) * units('kN')
+    displacements = (np.arange(1, 11) * 1000) * units('mm')
+
+    result = elastic_correction(loads, displacements, coeffs)
+
+    truth = np.array([940, 1890, 2840, 3790, 4740, 5690, 6640, 7590, 8540, 9490]) * units('mm')
+    assert_array_almost_equal(result, truth)
+
+
+def test_elastic_correction_linear_different_units():
+    """Test the elastic correction with inconsistent units given."""
+    coeffs = [5 * units('mm/kN'), 10 * units('mm')]
+    loads = (np.arange(10, 101, 10) * 1000) * units('N')
+    displacements = (np.arange(1, 11) * 1000000) * units('micron')
+
+    result = elastic_correction(loads, displacements, coeffs)
+
+    truth = np.array([940000, 1890000, 2840000, 3790000, 4740000,
+                      5690000, 6640000, 7590000, 8540000, 9490000]) * units('micron')
     assert_array_almost_equal(result, truth)
