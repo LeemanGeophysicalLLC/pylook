@@ -94,6 +94,17 @@ def test_remove_offset():
 
     result = remove_offset(data, 4, 6)
 
+    truth = np.array([0, 1, 2, 4, 4, 10, 4, 5, 6, 7, 8]) * units('mm')
+
+    assert_array_almost_equal(result, truth)
+
+
+def test_remove_offset_set_between():
+    """Test the remove offset function."""
+    data = np.array([0, 1, 2, 4, 4, 10, 10, 11, 12, 13, 14]) * units('mm')
+
+    result = remove_offset(data, 4, 6, set_between=True)
+
     truth = np.array([0, 1, 2, 4, 4, 4, 4, 5, 6, 7, 8]) * units('mm')
 
     assert_array_almost_equal(result, truth)
