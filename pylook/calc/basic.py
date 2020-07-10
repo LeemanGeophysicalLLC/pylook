@@ -124,3 +124,30 @@ def elastic_correction(load, displacement, coeffs):
                                       * displacement_base_units)
 
     return elastic_corrected_displacement.to(displacement_units_incoming)
+
+
+@exporter.export
+def friction(shear_component, normal_component):
+    """
+    Calculate the simple friction.
+
+    Parameters
+    ----------
+    shear_component : `pint.Quantity`
+        Shear component of load/force/stress
+    normal_component : `pint.Quantity`
+        Normal component of load/force/stress
+
+    Returns
+    -------
+    friction : `pint.Quantity`
+        Simple friction value
+
+    Notes
+    -----
+    Modifies the normal load/force/ stress to have a minimum value of 1e-16 to avoid any divide
+    by zero warnings or negative friction values due to the normal component.
+    """
+    # Clip the normal component to always be slightly above zero
+    normal_component = np.clip(normal_component, 1e-16 * normal_component.units, None)
+    return shear_component / normal_component

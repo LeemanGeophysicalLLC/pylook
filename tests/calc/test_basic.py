@@ -6,7 +6,7 @@
 
 import numpy as np
 
-from pylook.calc import (elastic_correction, remove_offset, zero)
+from pylook.calc import (elastic_correction, friction, remove_offset, zero)
 from pylook.testing import assert_array_almost_equal
 from pylook.units import units
 
@@ -134,4 +134,28 @@ def test_elastic_correction_quadratic_same_units():
 
     truth = np.array([740, 1090, 1040, 590, -260, -1510, -3160, -5210,
                       -7660, -10510]) * units('mm')
+    assert_array_almost_equal(result, truth)
+
+
+def test_friction_different_units():
+    """Test that the friction calculation produces expected values with different units."""
+    sigma_n = np.array([-100, 0, 1000, 2000, 3000, 4000, 5000]) * units('N')
+    tau = np.array([0, 0, 2.2, 2.2, 2.2, 2.2, 2.2]) * units('kN')
+
+    result = friction(tau, sigma_n)
+
+    truth = np.array([0, 0, 2.2, 1.1, 0.7333333, 0.55, 0.44]) * units('dimensionless')
+
+    assert_array_almost_equal(result, truth)
+
+
+def test_friction():
+    """Test that the friction calculation produces expected values with same units."""
+    sigma_n = np.array([-.1, 0, 1, 2, 3, 4, 5]) * units('kN')
+    tau = np.array([0, 0, 2.2, 2.2, 2.2, 2.2, 2.2]) * units('kN')
+
+    result = friction(tau, sigma_n)
+
+    truth = np.array([0, 0, 2.2, 1.1, 0.7333333, 0.55, 0.44]) * units('dimensionless')
+
     assert_array_almost_equal(result, truth)
