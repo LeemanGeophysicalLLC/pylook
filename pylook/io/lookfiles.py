@@ -2,7 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Contains utilities to work with "look" style data files."""
+"""Contains utilities to work with "look" style data files and associated "r" files."""
 
 import struct
 import warnings
@@ -11,6 +11,9 @@ import numpy as np
 from pint.errors import UndefinedUnitError
 
 from pylook.units import units
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
 
 
 def _binary_tuple_to_string(binary_form):
@@ -18,6 +21,7 @@ def _binary_tuple_to_string(binary_form):
     return ''.join(binary_form)
 
 
+@exporter.export
 def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
                 clean_header=True):
     """
