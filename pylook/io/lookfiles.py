@@ -152,3 +152,15 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
         data_dict[name] = data[:, i] * data_unit
 
     return data_dict, metadata
+
+
+@exporter.export
+class XlookParser:
+    """Xlook R File Parser."""
+
+    def __init__(self):
+        """Initialize the parser with 32 empty columns to match the Look data model."""
+        self.max_cols = 32
+        self.data = [np.array([]) for i in range(self.max_cols)]
+        self.data_units = [None for i in range(self.max_cols)]
+        self.data_names = [None for i in range(self.max_cols)]
