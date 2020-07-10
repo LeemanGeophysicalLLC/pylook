@@ -62,7 +62,7 @@ def zero(data, zero_idx, window=0, value=0, mode='at'):
 
 
 @exporter.export
-def remove_offset(data, start_idx, end_idx):
+def remove_offset(data, start_idx, end_idx, set_between=False):
     """
     Remove offsets in the data.
 
@@ -74,6 +74,9 @@ def remove_offset(data, start_idx, end_idx):
         Index that marks the start of the offset.
     end_idx : int
         Index that marks the end of the offset.
+    set_between : int
+        Set the data after the start point up to the end point to have the
+        value of the start point. Default is `False`.
 
     Returns
     -------
@@ -82,8 +85,13 @@ def remove_offset(data, start_idx, end_idx):
     """
     # Set the data after the offset to the data minus the offset
     offset = data[end_idx] - data[start_idx]
-    data[start_idx + 1:] = data[start_idx + 1:] - offset
-    data[start_idx: end_idx + 1] = data[start_idx]
+
+    # Set the intemediate data (during the offset) to be the first
+    # value if so desired.
+    if set_between:
+        data[start_idx: end_idx] = data[start_idx]
+
+    data[end_idx:] = data[end_idx:] - offset
     return data
 
 
