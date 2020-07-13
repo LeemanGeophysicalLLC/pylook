@@ -8,7 +8,7 @@ jobs:
     docker:
       - image: continuumio/miniconda3
     
-    working_directory: ~/repo
+    working_directory: ~/pylook
 
     steps:
       # Step 1 - get the repo
@@ -23,6 +23,7 @@ jobs:
           command: |
             conda init bash
             source activate pylook
+            pip install -e .
             pytest --flake8
 
 workflows:
