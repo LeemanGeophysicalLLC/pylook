@@ -5,15 +5,26 @@ orbs:
 
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+      - image: continuumio/miniconda3
+    
+    working_directory: ~/pylook
+
     steps:
+      # Step 1 - get the repo
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      # Step 2 - Install miniconda and deps
       - run:
-          command: ./manage.py test
-          name: Test
+          name: install-deps
+          command: conda env create -f environment.yml
+      # Step 3 - Run Tests with Flake8
+      - run:
+          name: test
+          command: |
+            conda init bash
+            source activate pylook
+            pip install -e .
+            pytest --flake8
 
 workflows:
   main:
