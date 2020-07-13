@@ -11,6 +11,9 @@ import numpy as np
 from pint.errors import UndefinedUnitError
 
 from pylook.units import units
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
 
 
 def _binary_tuple_to_string(binary_form):
@@ -18,6 +21,7 @@ def _binary_tuple_to_string(binary_form):
     return ''.join(binary_form)
 
 
+@exporter.export
 def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
                 clean_header=True):
     """
