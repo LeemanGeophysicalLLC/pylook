@@ -13,8 +13,7 @@ __all__ = ('Exporter',)
 
 
 class Exporter:
-    """
-    Manages exporting of symbols from the module.
+    """Manages exporting of symbols from the module.
 
     Grabs a reference to `globals()` for a module and provides a decorator to add
     functions and classes to `__all__` rather than requiring a separately maintained list.

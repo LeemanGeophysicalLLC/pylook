@@ -26,8 +26,7 @@ def _binary_tuple_to_string(binary_form):
 @exporter.export
 def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
                 clean_header=True):
-    """
-    Read a look binary formatted file into a dictionary of united arrays.
+    """Read a look binary formatted file into a dictionary of united arrays.
 
     Parameters
     ----------
@@ -325,8 +324,7 @@ class XlookParser:
         action_function(line.strip())
 
     def command_math(self, command):
-        r"""
-        Perform math operations with columns of data.
+        r"""Perform math operations with columns of data.
 
         Parameters
         ----------

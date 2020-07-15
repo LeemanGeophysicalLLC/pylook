@@ -12,8 +12,7 @@ from .units import units
 
 
 def check_mask(actual, desired):
-    """
-    Check that two arrays have the same mask.
+    """Check that two arrays have the same mask.
 
     This handles the fact that `~numpy.testing.assert_array_equal` ignores masked values
     in either of the arrays. This ensures that the masks are identical.

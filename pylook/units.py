@@ -2,8 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""
-Module to provide unit support.
+"""Module to provide unit support.
 
 This makes use of the :mod:`pint` library and sets up the default settings
 for good temperature support.
