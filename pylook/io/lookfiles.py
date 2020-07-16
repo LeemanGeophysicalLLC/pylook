@@ -360,6 +360,7 @@ class XlookParser:
             Path to r file to run
         """
         with open(rfile, 'r') as f:
+            self._r_file_path = Path(rfile)
             for line in f.readlines():
                 # If there is an in-line comment, we split and just keep the first part
                 if '#' in line:
@@ -838,7 +839,7 @@ class XlookParser:
             self._set_data_by_index(col_idx, np.delete(self._get_data_by_index(col_idx),
                                                        slice_to_delete))
 
-    def command_read(self, command):
+    def command_read(self, command, path_relative_to_r_file=True):
         """
         Read a binary file in for processing.
 
@@ -846,6 +847,9 @@ class XlookParser:
         ----------
         command : str
             command from r file
+        path_relative_to_r_file : boolean
+            Determines if the path to be read is relative to the r file as xlook did or if
+            it is relative to the calling Python code. Default True.
 
         Notes
         -----
@@ -855,6 +859,9 @@ class XlookParser:
             return
         _, fpath = command.split(' ')
         fpath = Path(fpath.strip())
+
+        if path_relative_to_r_file:
+            fpath = self._r_file_path.parent / fpath.name
 
         data_dict, _ = read_binary(fpath)
 
