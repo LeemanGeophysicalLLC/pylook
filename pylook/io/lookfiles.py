@@ -29,7 +29,7 @@ def _binary_tuple_to_string(binary_form):
 
 
 @exporter.export
-def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
+def read_binary(filename, data_endianness=None, unrecognized_units='ignore',
                 clean_header=True):
     """
     Read a look binary formatted file into a dictionary of united arrays.
@@ -39,7 +39,9 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
     filename : string
         Filename or path to file to read
     data_endianness: string
-        Endianness of the data section of the file. 'big' or 'little' (default).
+        Endianness of the data section of the file. None, 'big', or 'little'.
+        None interprets the file as it believes fit, big and little force the
+        endianness.
     unrecogized_units : string
         'ignore' (defualt) assigns dimensionless to unrecognized units, 'error' will
         fail if unrecognized units are encountered.
@@ -60,7 +62,13 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
     be changed to 'big' to accomodate older files or files written on power pc
     chips.
     """
+    if data_endianness is None:
+        data_endianness = 'little'
+
     metadata = _read_binary_file_metadata(filename, clean_header=clean_header)
+
+    if metadata['bytes per data point'] == 4:
+        data_endianness = 'big'
 
     with open(filename, 'rb') as f:
 
@@ -117,7 +125,7 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
             data_point_format_little_endian = '<f'
             data_point_format_big_endian = '>f'
         else:
-            ValueError(f"Bytes per data must be 4 or 8. Got {metadata['byte per data point']}")
+            ValueError(f"Bytes per data must be 4 or 8. Got {metadata['bytes per data point']}")
 
         for col in range(metadata['number of columns']):
             for row in range(col_recs[col]):
@@ -393,8 +401,8 @@ class XlookParser:
         command_root = line.strip().split(' ')[0]
 
         # There were never supposed to be commas in the lines, but some files
-        # had them - XLook just ignored them so we do the same
-        line = line.replace(',', '')
+        # had them we replace them with a space for arg seperation.
+        line = line.replace(',', ' ')
 
         # Dictionary mapping commands to their functions
         command_functions = {'math': self.command_math,
