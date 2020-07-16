@@ -19,8 +19,13 @@ exporter = Exporter(globals())
 
 
 def _binary_tuple_to_string(binary_form):
-    binary_form = [c.decode() for c in binary_form]
-    return ''.join(binary_form)
+    out = []
+    for c in binary_form:
+        # Stop at null termination
+        if c == b'\x00':
+            break
+        out.append(c.decode())
+    return ''.join(out)
 
 
 @exporter.export
@@ -55,17 +60,162 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
     be changed to 'big' to accomodate older files or files written on power pc
     chips.
     """
+    metadata = _read_binary_file_metadata(filename, clean_header=clean_header)
+
     with open(filename, 'rb') as f:
+
+        # Seek past the file metadata header that we have already processed
+        f.seek(36)
 
         col_headings = []
         col_recs = []
         col_units = []
+
+        # For each possible column (32 maximum columns) unpack its header
+        # information and store it.  Only store column headers of columns
+        # that contain data.  Use termination at first NULL.
+        for i in range(metadata['header format']):
+            # Channel name (13 characters)
+            chname = struct.unpack('13c', f.read(13))
+            chname = _binary_tuple_to_string(chname)
+            chname = chname.split('\0')[0]
+
+            # Channel units (13 characters)
+            chunits = struct.unpack('13c', f.read(13))
+            chunits = _binary_tuple_to_string(chunits)
+            chunits = chunits.split('\0')[0]
+
+            # This field is now unused, so we just read past it (int)
+            _ = struct.unpack('>i', f.read(4))
+
+            # This field is now unused, so we just read past it (50 characters)
+            _ = struct.unpack('50c', f.read(50))
+
+            # Number of elements (int)
+            nelem = struct.unpack('>i', f.read(4))
+            nelem = int(nelem[0])
+
+            if clean_header:
+                chname = chname.strip()
+                chunits = chunits.strip()
+
+            if chname[0:6] == 'no_val':
+                continue  # Skip Blank Channels
+            else:
+                col_headings.append(chname)
+                col_recs.append(nelem)
+                col_units.append(chunits)
+
+        # Read the data into a numpy recarray
+        data = np.empty([metadata['number of records'], metadata['number of columns']])
+
+        # Make the right data formatter for the file
+        if metadata['bytes per data point'] == 8:
+            data_point_format_little_endian = '<d'
+            data_point_format_big_endian = '>d'
+        elif metadata['bytes per data point'] == 4:
+            data_point_format_little_endian = '<f'
+            data_point_format_big_endian = '>f'
+        else:
+            ValueError(f"Bytes per data must be 4 or 8. Got {metadata['byte per data point']}")
+
+        for col in range(metadata['number of columns']):
+            for row in range(col_recs[col]):
+                if data_endianness == 'little':
+                    data[row, col] = struct.unpack(data_point_format_little_endian,
+                                                   f.read(metadata['bytes per data point']))[0]
+                elif data_endianness == 'big':
+                    data[row, col] = struct.unpack(data_point_format_big_endian,
+                                                   f.read(metadata['bytes per data point']))[0]
+                else:
+                    ValueError('Data endian setting invalid - options are little and big')
+
+    data_dict = {}
+    data_dict['rec_num'] = np.arange(metadata['number of records']) * units('dimensionless')
+
+    for i, (name, unit) in enumerate(zip(col_headings, col_units)):
+        data_unit = units('dimensionless')
+        try:
+            data_unit = units(unit)
+
+        except UndefinedUnitError:
+            if unrecognized_units == 'ignore':
+                warnings.warn(f'Unknown unit {unit} - assigning dimensionless units.')
+            else:
+                raise UndefinedUnitError(unit)
+
+        data_dict[name] = data[:, i] * data_unit
+
+    return data_dict, metadata
+
+
+def _determine_header_and_data_format(file_size, num_channels, num_records):
+    """
+    Determine the column metadata header and data format of the file.
+
+    Look files have been through several generations as data and systems have expanded.
+    This helper determines if the file was written to hold up to 16 or 32 columns and
+    if the data are stored as 4 byte floats or 8 byte doubles.
+
+    Parameters
+    ----------
+    file_size : int
+        Total file size in bytes
+    num_channels : int
+        Number of data channels written to the file
+    num_records : int
+        Number of records (rows) written to each channel
+
+    Returns
+    -------
+    number_of_header_channels : int
+        Number of channels in the header, 16 or 32.
+    bytes_per_data : int
+        Nubmer of bytes per data point, 4 or 8.
+    """
+    # Calculate the size if this were a 16 channel file - these files used all 4 byte floats
+    sixteen_ch_float_file_size = 36 + 84 * 16 + 4 * num_records * num_channels
+
+    # Calculate the size if this were a 32 channel file of 4 byte floats
+    thirty_two_ch_float_file_size = 36 + 84 * 32 + 4 * num_records * num_channels
+
+    # Calculate the size if this were a 32 channel file of 8 byte doubles
+    thirty_two_ch_double_file_size = 36 + 84 * 32 + 8 * num_records * num_channels
+
+    if file_size == sixteen_ch_float_file_size:
+        return 16, 4
+    elif file_size == thirty_two_ch_float_file_size:
+        return 32, 4
+    elif file_size == thirty_two_ch_double_file_size:
+        return 32, 8
+    else:
+        IOError(f'Cannot determine format of look file with size {file_size}')
+
+
+def _read_binary_file_metadata(filename, clean_header=True):
+    """
+    Read the file metadata and detemine the file format of a look file.
+
+    Parameters
+    ----------
+    filename : string
+        Filename or path to file to read
+    clean_header : boolean
+        Remove extra whitespace in the header data column names and units. Default True.
+
+    Returns
+    -------
+    metadata : dict
+        Dictionary of file metadata
+    """
+    with open(filename, 'rb') as f:
         metadata = {}
 
         # Unpack information at the top of the file about the experiment
         name = struct.unpack('20c', f.read(20))
         name = _binary_tuple_to_string(name)
         name = name.split('\0')[0]
+
         if clean_header:
             name = name.strip()
             metadata['name'] = name
@@ -89,73 +239,17 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
         dtime = struct.unpack('>i', f.read(4))[0]
         metadata['dtime'] = dtime
 
-        # For each possible column (32 maximum columns) unpack its header
-        # information and store it.  Only store column headers of columns
-        # that contain data.  Use termination at first NULL.
-        for i in range(32):
+        # Get the total size of the file
+        metadata['file size'] = filename.stat().st_size
 
-            # Channel name (13 characters)
-            chname = struct.unpack('13c', f.read(13))
-            chname = _binary_tuple_to_string(chname)
-            chname = chname.split('\0')[0]
+        # Determine the type of column header and data we're going to
+        # encounter and add that to metadata
+        res = _determine_header_and_data_format(metadata['file size'],
+                                                metadata['number of columns'],
+                                                metadata['number of records'])
+        metadata['header format'], metadata['bytes per data point'] = res
 
-            # Channel units (13 characters)
-            chunits = struct.unpack('13c', f.read(13))
-            chunits = _binary_tuple_to_string(chunits)
-            chunits = chunits.split('\0')[0]
-
-            # This field is now unused, so we just read past it (int)
-            _ = struct.unpack('>i', f.read(4))
-
-            # This field is now unused, so we just read past it (50 characters)
-            comment = struct.unpack('50c', f.read(50))
-            comment = _binary_tuple_to_string(comment)
-
-            # Number of elements (int)
-            nelem = struct.unpack('>i', f.read(4))
-            nelem = int(nelem[0])
-
-            if clean_header:
-                chname = chname.strip()
-                chunits = chunits.strip()
-                comment = comment.strip()
-
-            if chname[0:6] == 'no_val':
-                continue  # Skip Blank Channels
-            else:
-                col_headings.append(chname)
-                col_recs.append(nelem)
-                col_units.append(chunits)
-
-        # Read the data into a numpy recarray
-        data = np.empty([num_recs, num_cols])
-
-        for col in range(num_cols):
-            for row in range(col_recs[col]):
-                if data_endianness == 'little':
-                    data[row, col] = struct.unpack('<d', f.read(8))[0]
-                elif data_endianness == 'big':
-                    data[row, col] = struct.unpack('>d', f.read(8))[0]
-                else:
-                    ValueError('Data endian setting invalid - options are little and big')
-
-    data_dict = {}
-    data_dict['rec_num'] = np.arange(num_recs) * units('dimensionless')
-
-    for i, (name, unit) in enumerate(zip(col_headings, col_units)):
-        data_unit = units('dimensionless')
-        try:
-            data_unit = units(unit)
-
-        except UndefinedUnitError:
-            if unrecognized_units == 'ignore':
-                warnings.warn(f'Unknown unit {unit} - assigning dimensionless units.')
-            else:
-                raise UndefinedUnitError(unit)
-
-        data_dict[name] = data[:, i] * data_unit
-
-    return data_dict, metadata
+        return metadata
 
 
 @exporter.export
