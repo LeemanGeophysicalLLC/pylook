@@ -439,7 +439,7 @@ class XlookParser:
             return
 
         (_, arg_1, operation, arg_2, type_of_math,
-         output_col_idx, output_name, output_unit) = command.split(' ')
+         output_col_idx, output_name, output_unit) = command.split()
 
         arg_1 = int(arg_1)
         output_col_idx = int(output_col_idx)
@@ -567,7 +567,7 @@ class XlookParser:
         Returns False so we can bail on processing that command and keep running like
         XLook did.
         """
-        n_args_received = len(command.split(' '))
+        n_args_received = len(command.split())
         if n_args_received != n_args:
             warnings.warn(f'Command {command} expected {n_args}, but received'
                           f' {n_args_received} - ignored and processing proceeding.')
@@ -589,7 +589,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 5):
             return
-        (_, input_col_idx, output_col_idx, output_name, output_unit) = command.split(' ')
+        (_, input_col_idx, output_col_idx, output_name, output_unit) = command.split()
         input_col_idx = int(input_col_idx)
         output_col_idx = int(output_col_idx)
         result = np.cumsum(self._get_data_by_index(input_col_idx))
@@ -615,7 +615,7 @@ class XlookParser:
         if not self._check_number_of_arguments(command, 6):
             return
         (_, power, input_col_idx, output_col_idx,
-         output_name, output_unit) = command.split(' ')
+         output_name, output_unit) = command.split()
         input_col_idx = int(input_col_idx)
         output_col_idx = int(output_col_idx)
         power = float(power)
@@ -645,7 +645,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 3):
             return
-        (_, input_col_idx, zero_record) = command.split(' ')
+        (_, input_col_idx, zero_record) = command.split()
         input_col_idx = int(input_col_idx)
         zero_record = int(zero_record)
         result = lc.zero(self._get_data_by_index(input_col_idx) * units('dimensionless'),
@@ -671,7 +671,7 @@ class XlookParser:
             return
 
         (_, disp_col_idx, load_col_idx, output_col_idx,
-         first_idx, last_idx, slope, output_name, output_unit) = command.split(' ')
+         first_idx, last_idx, slope, output_name, output_unit) = command.split()
         disp_col_idx = int(disp_col_idx)
         load_col_idx = int(load_col_idx)
         output_col_idx = int(output_col_idx)
@@ -711,7 +711,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 2):
             return
-        _, col_idx = command.split(' ')
+        _, col_idx = command.split()
         col_idx = int(col_idx)
         # Set to empty and None for names and units
         self._set_data_by_index(col_idx, np.empty_like(self._get_data_by_index(col_idx)))
@@ -736,7 +736,7 @@ class XlookParser:
             return
 
         (_, arg_1, operation, arg_2, type_of_math,
-         output_col_idx, start_idx, stop_idx, output_name, output_unit) = command.split(' ')
+         output_col_idx, start_idx, stop_idx, output_name, output_unit) = command.split()
 
         arg_1 = int(arg_1)
         output_col_idx = int(output_col_idx)
@@ -796,7 +796,7 @@ class XlookParser:
         if not self._check_number_of_arguments(command, 5):
             return
 
-        (_, col_idx, start_idx, stop_idx, set_between) = command.split(' ')
+        (_, col_idx, start_idx, stop_idx, set_between) = command.split()
         col_idx = int(col_idx)
         start_idx = int(start_idx)
         stop_idx = int(stop_idx)
@@ -829,7 +829,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 3):
             return
-        _, start_row_idx, end_row_idx = command.split(' ')
+        _, start_row_idx, end_row_idx = command.split()
         start_row_idx = int(start_row_idx)
         end_row_idx = int(end_row_idx)
         if end_row_idx == -1:
@@ -857,7 +857,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 2):
             return
-        _, fpath = command.split(' ')
+        _, fpath = command.split()
         fpath = Path(fpath.strip())
 
         if path_relative_to_r_file:
