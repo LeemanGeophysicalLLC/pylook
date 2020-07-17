@@ -125,7 +125,8 @@ def read_binary(filename, data_endianness=None, unrecognized_units='ignore',
             data_point_format_little_endian = '<f'
             data_point_format_big_endian = '>f'
         else:
-            ValueError(f"Bytes per data must be 4 or 8. Got {metadata['bytes per data point']}")
+            ValueError('Bytes per data must be 4 or 8. Got'
+                       f" {metadata['bytes per data point']}")
 
         for col in range(metadata['number of columns']):
             for row in range(col_recs[col]):
@@ -358,7 +359,7 @@ class XlookParser:
         """
         self.data[index] = data
 
-    def doit(self, rfile):
+    def doit(self, rfile, endianness=None):
         """
         Run an r-file - naming directly from XLook itself for ease of learning for new users.
 
@@ -366,6 +367,9 @@ class XlookParser:
         ----------
         rfile : str
             Path to r file to run
+        endianness: str
+            None, little, or big. Defaults to None which lets the reader try to determine this,
+            but can be forced if needed.
         """
         with open(rfile, 'r') as f:
             self._r_file_path = Path(rfile)
@@ -847,7 +851,7 @@ class XlookParser:
             self._set_data_by_index(col_idx, np.delete(self._get_data_by_index(col_idx),
                                                        slice_to_delete))
 
-    def command_read(self, command, path_relative_to_r_file=True):
+    def command_read(self, command, path_relative_to_r_file=True, endianness=None):
         """
         Read a binary file in for processing.
 
@@ -871,7 +875,7 @@ class XlookParser:
         if path_relative_to_r_file:
             fpath = self._r_file_path.parent / fpath.name
 
-        data_dict, _ = read_binary(fpath)
+        data_dict, _ = read_binary(fpath, data_endianness=endianness)
 
         # Break the data dict out into the structure of the class
         for i, (name, data_col) in enumerate(data_dict.items()):
