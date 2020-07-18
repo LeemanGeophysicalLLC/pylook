@@ -29,7 +29,7 @@ def _binary_tuple_to_string(binary_form):
 
 
 @exporter.export
-def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
+def read_binary(filename, data_endianness=None, unrecognized_units='ignore',
                 clean_header=True):
     """
     Read a look binary formatted file into a dictionary of united arrays.
@@ -39,7 +39,9 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
     filename : string
         Filename or path to file to read
     data_endianness: string
-        Endianness of the data section of the file. 'big' or 'little' (default).
+        Endianness of the data section of the file. None, 'big', or 'little'.
+        None interprets the file as it believes fit, big and little force the
+        endianness.
     unrecogized_units : string
         'ignore' (defualt) assigns dimensionless to unrecognized units, 'error' will
         fail if unrecognized units are encountered.
@@ -60,7 +62,13 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
     be changed to 'big' to accomodate older files or files written on power pc
     chips.
     """
+    if data_endianness is None:
+        data_endianness = 'little'
+
     metadata = _read_binary_file_metadata(filename, clean_header=clean_header)
+
+    if metadata['bytes per data point'] == 4:
+        data_endianness = 'big'
 
     with open(filename, 'rb') as f:
 
@@ -117,7 +125,8 @@ def read_binary(filename, data_endianness='little', unrecognized_units='ignore',
             data_point_format_little_endian = '<f'
             data_point_format_big_endian = '>f'
         else:
-            ValueError(f"Bytes per data must be 4 or 8. Got {metadata['byte per data point']}")
+            ValueError('Bytes per data must be 4 or 8. Got'
+                       f" {metadata['bytes per data point']}")
 
         for col in range(metadata['number of columns']):
             for row in range(col_recs[col]):
@@ -350,7 +359,7 @@ class XlookParser:
         """
         self.data[index] = data
 
-    def doit(self, rfile):
+    def doit(self, rfile, endianness=None):
         """
         Run an r-file - naming directly from XLook itself for ease of learning for new users.
 
@@ -358,8 +367,12 @@ class XlookParser:
         ----------
         rfile : str
             Path to r file to run
+        endianness: str
+            None, little, or big. Defaults to None which lets the reader try to determine this,
+            but can be forced if needed.
         """
         with open(rfile, 'r') as f:
+            self._r_file_path = Path(rfile)
             for line in f.readlines():
                 # If there is an in-line comment, we split and just keep the first part
                 if '#' in line:
@@ -392,8 +405,8 @@ class XlookParser:
         command_root = line.strip().split(' ')[0]
 
         # There were never supposed to be commas in the lines, but some files
-        # had them - XLook just ignored them so we do the same
-        line = line.replace(',', '')
+        # had them we replace them with a space for arg seperation.
+        line = line.replace(',', ' ')
 
         # Dictionary mapping commands to their functions
         command_functions = {'math': self.command_math,
@@ -438,7 +451,7 @@ class XlookParser:
             return
 
         (_, arg_1, operation, arg_2, type_of_math,
-         output_col_idx, output_name, output_unit) = command.split(' ')
+         output_col_idx, output_name, output_unit) = command.split()
 
         arg_1 = int(arg_1)
         output_col_idx = int(output_col_idx)
@@ -566,7 +579,7 @@ class XlookParser:
         Returns False so we can bail on processing that command and keep running like
         XLook did.
         """
-        n_args_received = len(command.split(' '))
+        n_args_received = len(command.split())
         if n_args_received != n_args:
             warnings.warn(f'Command {command} expected {n_args}, but received'
                           f' {n_args_received} - ignored and processing proceeding.')
@@ -588,7 +601,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 5):
             return
-        (_, input_col_idx, output_col_idx, output_name, output_unit) = command.split(' ')
+        (_, input_col_idx, output_col_idx, output_name, output_unit) = command.split()
         input_col_idx = int(input_col_idx)
         output_col_idx = int(output_col_idx)
         result = np.cumsum(self._get_data_by_index(input_col_idx))
@@ -614,7 +627,7 @@ class XlookParser:
         if not self._check_number_of_arguments(command, 6):
             return
         (_, power, input_col_idx, output_col_idx,
-         output_name, output_unit) = command.split(' ')
+         output_name, output_unit) = command.split()
         input_col_idx = int(input_col_idx)
         output_col_idx = int(output_col_idx)
         power = float(power)
@@ -644,7 +657,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 3):
             return
-        (_, input_col_idx, zero_record) = command.split(' ')
+        (_, input_col_idx, zero_record) = command.split()
         input_col_idx = int(input_col_idx)
         zero_record = int(zero_record)
         result = lc.zero(self._get_data_by_index(input_col_idx) * units('dimensionless'),
@@ -670,7 +683,7 @@ class XlookParser:
             return
 
         (_, disp_col_idx, load_col_idx, output_col_idx,
-         first_idx, last_idx, slope, output_name, output_unit) = command.split(' ')
+         first_idx, last_idx, slope, output_name, output_unit) = command.split()
         disp_col_idx = int(disp_col_idx)
         load_col_idx = int(load_col_idx)
         output_col_idx = int(output_col_idx)
@@ -710,7 +723,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 2):
             return
-        _, col_idx = command.split(' ')
+        _, col_idx = command.split()
         col_idx = int(col_idx)
         # Set to empty and None for names and units
         self._set_data_by_index(col_idx, np.empty_like(self._get_data_by_index(col_idx)))
@@ -735,7 +748,7 @@ class XlookParser:
             return
 
         (_, arg_1, operation, arg_2, type_of_math,
-         output_col_idx, start_idx, stop_idx, output_name, output_unit) = command.split(' ')
+         output_col_idx, start_idx, stop_idx, output_name, output_unit) = command.split()
 
         arg_1 = int(arg_1)
         output_col_idx = int(output_col_idx)
@@ -795,7 +808,7 @@ class XlookParser:
         if not self._check_number_of_arguments(command, 5):
             return
 
-        (_, col_idx, start_idx, stop_idx, set_between) = command.split(' ')
+        (_, col_idx, start_idx, stop_idx, set_between) = command.split()
         col_idx = int(col_idx)
         start_idx = int(start_idx)
         stop_idx = int(stop_idx)
@@ -828,7 +841,7 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 3):
             return
-        _, start_row_idx, end_row_idx = command.split(' ')
+        _, start_row_idx, end_row_idx = command.split()
         start_row_idx = int(start_row_idx)
         end_row_idx = int(end_row_idx)
         if end_row_idx == -1:
@@ -838,7 +851,7 @@ class XlookParser:
             self._set_data_by_index(col_idx, np.delete(self._get_data_by_index(col_idx),
                                                        slice_to_delete))
 
-    def command_read(self, command):
+    def command_read(self, command, path_relative_to_r_file=True, endianness=None):
         """
         Read a binary file in for processing.
 
@@ -846,6 +859,9 @@ class XlookParser:
         ----------
         command : str
             command from r file
+        path_relative_to_r_file : boolean
+            Determines if the path to be read is relative to the r file as xlook did or if
+            it is relative to the calling Python code. Default True.
 
         Notes
         -----
@@ -853,10 +869,13 @@ class XlookParser:
         """
         if not self._check_number_of_arguments(command, 2):
             return
-        _, fpath = command.split(' ')
+        _, fpath = command.split()
         fpath = Path(fpath.strip())
 
-        data_dict, _ = read_binary(fpath)
+        if path_relative_to_r_file:
+            fpath = self._r_file_path.parent / fpath.name
+
+        data_dict, _ = read_binary(fpath, data_endianness=endianness)
 
         # Break the data dict out into the structure of the class
         for i, (name, data_col) in enumerate(data_dict.items()):
