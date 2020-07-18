@@ -1,0 +1,30 @@
+
+
+pylook.calc
+===========
+
+.. automodule:: pylook.calc
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      elastic_correction
+      friction
+      remove_offset
+      zero
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+

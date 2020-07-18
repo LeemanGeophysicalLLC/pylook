@@ -1,0 +1,12 @@
+read_binary
+=====================
+
+.. currentmodule:: pylook.io
+
+.. autofunction:: read_binary
+
+.. include:: pylook.io.read_binary.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

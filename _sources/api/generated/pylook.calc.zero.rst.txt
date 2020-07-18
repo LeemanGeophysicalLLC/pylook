@@ -1,0 +1,12 @@
+zero
+================
+
+.. currentmodule:: pylook.calc
+
+.. autofunction:: zero
+
+.. include:: pylook.calc.zero.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

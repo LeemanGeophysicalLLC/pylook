@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Running the P655 Reduction File &mdash; pylook 0.0.post63 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reducing p655 in Pure Python" href="p655_pure_python.html" />
+    <link rel="prev" title="Examples" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> pylook
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Running the P655 Reduction File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="p655_pure_python.html">Reducing p655 in Pure Python</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pylook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>Running the P655 Reduction File</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/examples/p655_run_r_file.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-p655-run-r-file-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="running-the-p655-reduction-file">
+<span id="sphx-glr-examples-p655-run-r-file-py"></span><h1>Running the P655 Reduction File<a class="headerlink" href="#running-the-p655-reduction-file" title="Permalink to this headline">¶</a></h1>
+<p>Experiment p655 was run in 2005 by Mckiernan, Rathbun, and Rowe. It was reduced by Chris
+Marone. Here we use the xlook r file parser to run that r file and then get it into the
+dictionary of quantity arrays like we use everywhere else and do some simple plotting of the
+experiment.</p>
+<p>For the curious, this experiment is determining the frictional response of “Ghost Rocks”
+from Kodiak Alaska.</p>
+<p>First we import a few things so we can get at the test data and we import the xlook parser
+object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">pylook.io</span> <span class="kn">import</span> <a href="../api/generated/pylook.io.XlookParser.html#pylook.io.XlookParser" title="pylook.io.XlookParser" class="sphx-glr-backref-module-pylook-io sphx-glr-backref-type-py-class"><span class="n">XlookParser</span></a>
+<span class="kn">from</span> <span class="nn">pylook.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+</pre></div>
+</div>
+<p>We use pooch to get test data when you run this notebook for the first time, so you won’t
+have to use that <cite>get_test_data</cite> function - it’s a helper we use to make running pylook
+examples easy! We run it on the r file and the data file so we’re sure that both are
+downloaded to your system. In your world, you’ll just need to set the <cite>r_file_path</cite> variable
+to the path to your r file. We recommend using pathlib to do this so your code is portable
+across operating systems!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r_file_path</span> <span class="o">=</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;p655_r&#39;</span><span class="p">)</span>
+
+<span class="c1"># Getting the l file as well, just so we&#39;re sure it&#39;s downloaded!</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;p655intact100l&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We need to create an instance of the parser - this is an object that stores all of the
+commands and parsing instructions for interpreting r files and running them.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/pylook.io.XlookParser.html#pylook.io.XlookParser" title="pylook.io.XlookParser" class="sphx-glr-backref-module-pylook-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">look</span></a> <span class="o">=</span> <a href="../api/generated/pylook.io.XlookParser.html#pylook.io.XlookParser" title="pylook.io.XlookParser" class="sphx-glr-backref-module-pylook-io sphx-glr-backref-type-py-class"><span class="n">XlookParser</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p>As a hat tip to xlook, we call the <cite>doit</cite> method on our parser to run the r file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/pylook.io.XlookParser.html#pylook.io.XlookParser.doit" title="pylook.io.XlookParser.doit" class="sphx-glr-backref-module-pylook-io sphx-glr-backref-type-py-method"><span class="n">look</span><span class="o">.</span><span class="n">doit</span></a><span class="p">(</span><span class="n">r_file_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>c:\users\jleeman\git_repos\pylook\pylook\io\lookfiles.py:559: UserWarning: Invalid Command strain 8 3 7 0 -1 shear_str . - ignored and processing proceeding.
+  warnings.warn(f&#39;Invalid Command {command} - ignored and processing proceeding.&#39;)
+c:\users\jleeman\git_repos\pylook\pylook\io\lookfiles.py:483: RuntimeWarning: divide by zero encountered in true_divide
+  result = first_arg_data / second_arg_data
+c:\users\jleeman\git_repos\pylook\pylook\io\lookfiles.py:483: RuntimeWarning: invalid value encountered in true_divide
+  result = first_arg_data / second_arg_data
+c:\users\jleeman\git_repos\pylook\pylook\io\lookfiles.py:780: RuntimeWarning: invalid value encountered in multiply
+  result = first_arg_data * second_arg_data
+</pre></div>
+</div>
+<p>Just as xlook did, unknown commands are ignored. In this case we see warnings that the
+strain command is unknown (i.e. we haven’t implemented it yet) and there are some follow on
+consequences from that calculation not happening, but we keep running and get valid output!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The data are currently in a list of arrays in the object, but we want to get the same data</span>
+<span class="c1"># structure we work with when dealing with data in pure Python - a dictionary of quantity</span>
+<span class="c1"># arrays! That can be tricky because we need to assign units which are sometimes misspelled</span>
+<span class="c1"># or just odd. The `get_data_dict` method will do its best, but ultimately fail with unknown</span>
+<span class="c1"># units. With the `ignore_unknown_units` argument set to `True` it will warn and assign</span>
+<span class="c1"># dimensionless to anything it doesn&#39;t understand. You can also manually specify units for</span>
+<span class="c1"># all columns, but it is generally easier to fix it up later in practice.</span>
+
+<span class="n">d</span> <span class="o">=</span> <a href="../api/generated/pylook.io.XlookParser.html#pylook.io.XlookParser.get_data_dict" title="pylook.io.XlookParser.get_data_dict" class="sphx-glr-backref-module-pylook-io sphx-glr-backref-type-py-method"><span class="n">look</span><span class="o">.</span><span class="n">get_data_dict</span></a><span class="p">(</span><span class="n">ignore_unknown_units</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>c:\users\jleeman\git_repos\pylook\pylook\io\lookfiles.py:932: UserWarning: Unknown unit mic for data ec_disp was assigned dimensionless
+  warnings.warn(f&#39;Unknown unit {unit} for data {name}&#39;
+</pre></div>
+</div>
+<p>Import our unit registry and fix up the bad units to microns as they should have been.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pylook.units</span> <span class="kn">import</span> <a href="../api/generated/pylook.units.html#pylook.units.units" title="pylook.units.units" class="sphx-glr-backref-module-pylook-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a>
+
+<span class="c1"># Fix up that bad unit name</span>
+<span class="n">d</span><span class="p">[</span><span class="s1">&#39;ec_disp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;ec_disp&#39;</span><span class="p">]</span> <span class="o">*</span> <a href="../api/generated/pylook.units.html#pylook.units.units" title="pylook.units.units" class="sphx-glr-backref-module-pylook-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;micron&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’ll use Bokeh to take a quick look at the data. Matplotlib is the best choice for your
+publication plots, but the speed and interactivity of Bokeh in the notebook is hard to beat.
+We’ll be adding helpers to pylook to make this process easier in the future as well.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We need to do some imports from bokeh and turn on the notebook backend.</span>
+
+<span class="kn">from</span> <span class="nn">bokeh.layouts</span> <span class="kn">import</span> <span class="n">gridplot</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span>
+<span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">figure</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">bokeh.io</span> <span class="kn">import</span> <span class="n">output_notebook</span>
+
+<span class="n">output_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is a handy function that will be integrated into pylook in a more advanced way soon,
+but demonstrates how to make a flexible plotting function instead of copying and pasting a
+bunch of code over and over again.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_runplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x_var</span><span class="o">=</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="n">y_vars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="s1">&#39;pan,wheel_zoom,box_zoom,reset,save,box_select,hover&#39;</span><span class="p">):</span>
+    <span class="n">plots</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">col_name</span> <span class="o">==</span> <span class="n">x_var</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">y_vars</span> <span class="ow">and</span> <span class="p">(</span><span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">y_vars</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># First plot is simple, the rest we share the x range with the first</span>
+        <span class="k">if</span> <span class="n">plots</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">col_name</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">col_name</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">x_range</span><span class="o">=</span><span class="n">plots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_range</span><span class="p">)</span>
+
+        <span class="c1"># Plot the data and set the labels</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x_var</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/pylook.units.html#pylook.units.units" title="pylook.units.units" class="sphx-glr-backref-module-pylook-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/pylook.units.html#pylook.units.units" title="pylook.units.units" class="sphx-glr-backref-module-pylook-units sphx-glr-backref-type-py-attribute"><span class="n">units</span></a><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x_var</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">show</span><span class="p">(</span><span class="n">gridplot</span><span class="p">(</span><span class="n">plots</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">plot_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">plot_height</span><span class="o">=</span><span class="mi">175</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>By default make_runplot would plot all of the variables, let’s just plot a couple of basic
+ones. Hover over the graph to see the values! That can be turned off by clicking the message
+bubble icon in the plot toolbar. If we don’t specify, data are plotted with respect to time.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make_runplot</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Shear_stress&#39;</span><span class="p">,</span> <span class="s1">&#39;Nor_stress&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We can specify to plot relative to another x variable though - with load point displacement
+probably being the most common.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make_runplot</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x_var</span><span class="o">=</span><span class="s1">&#39;LP_disp&#39;</span><span class="p">,</span> <span class="n">y_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Shear_stress&#39;</span><span class="p">,</span> <span class="s1">&#39;Nor_stress&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>That’s it! Running the r file for an experiment created for xlook is really just a few lines
+and then we can pull it into the pylook framework easily to manipualte that data with all of
+Python’s power. For new experiments, we recommend reducing the experiment in pure Python
+(see other examples), but being able to read and look at older experiments with no fiddling
+is important to utilize the massive amounts of data already collected and reduced.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.671 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-p655-run-r-file-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/aca26f224104dcbdfff19af6315fec2f/p655_run_r_file.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">p655_run_r_file.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/778de3f583d5ccd291108fdbb3a33398/p655_run_r_file.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">p655_run_r_file.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="p655_pure_python.html" class="btn btn-neutral float-right" title="Reducing p655 in Pure Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Leeman Geophysical LLC
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

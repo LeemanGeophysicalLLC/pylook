@@ -1,0 +1,12 @@
+elastic_correction
+==============================
+
+.. currentmodule:: pylook.calc
+
+.. autofunction:: elastic_correction
+
+.. include:: pylook.calc.elastic_correction.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

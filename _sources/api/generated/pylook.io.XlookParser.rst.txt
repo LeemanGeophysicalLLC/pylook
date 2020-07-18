@@ -1,0 +1,77 @@
+XlookParser
+=====================
+
+.. currentmodule:: pylook.io
+
+.. autoclass:: XlookParser
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~XlookParser.__init__
+      ~XlookParser.command_begin
+      ~XlookParser.command_com_file
+      ~XlookParser.command_comment
+      ~XlookParser.command_ec
+      ~XlookParser.command_invalid
+      ~XlookParser.command_math
+      ~XlookParser.command_math_int
+      ~XlookParser.command_offset_int
+      ~XlookParser.command_power
+      ~XlookParser.command_r_col
+      ~XlookParser.command_r_row
+      ~XlookParser.command_read
+      ~XlookParser.command_summation
+      ~XlookParser.command_zero
+      ~XlookParser.doit
+      ~XlookParser.get_data_dict
+      ~XlookParser.parse_line
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: command_begin
+   .. automethod:: command_com_file
+   .. automethod:: command_comment
+   .. automethod:: command_ec
+   .. automethod:: command_invalid
+   .. automethod:: command_math
+   .. automethod:: command_math_int
+   .. automethod:: command_offset_int
+   .. automethod:: command_power
+   .. automethod:: command_r_col
+   .. automethod:: command_r_row
+   .. automethod:: command_read
+   .. automethod:: command_summation
+   .. automethod:: command_zero
+   .. automethod:: doit
+   .. automethod:: get_data_dict
+   .. automethod:: parse_line
+
+   
+   
+
+.. include:: pylook.io.XlookParser.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

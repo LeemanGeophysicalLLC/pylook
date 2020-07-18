@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>XlookParser &mdash; pylook 0.0.post63 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pylook.calc" href="pylook.calc.html" />
+    <link rel="prev" title="read_binary" href="pylook.io.read_binary.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pylook
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pylook.units.html">units</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pylook.io.html">pylook.io</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pylook.io.read_binary.html">read_binary</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">XlookParser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-pylook-io-xlookparser">Examples using <code class="docutils literal notranslate"><span class="pre">pylook.io.XlookParser</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pylook.calc.html">pylook.calc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pylook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
+        
+          <li><a href="pylook.io.html">pylook.io</a> &raquo;</li>
+        
+      <li>XlookParser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/pylook.io.XlookParser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="xlookparser">
+<h1>XlookParser<a class="headerlink" href="#xlookparser" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="pylook.io.XlookParser">
+<em class="property">class </em><code class="sig-prename descclassname">pylook.io.</code><code class="sig-name descname">XlookParser</code><a class="headerlink" href="#pylook.io.XlookParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Xlook R File Parser.</p>
+<p>Initialize the parser with 32 empty columns to match the Look data model.</p>
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.__init__" title="pylook.io.XlookParser.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p>Initialize the parser with 32 empty columns to match the Look data model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_begin" title="pylook.io.XlookParser.command_begin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_begin</span></code></a>(command)</p></td>
+<td><p>Process the begin command.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_com_file" title="pylook.io.XlookParser.command_com_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_com_file</span></code></a>(command)</p></td>
+<td><p>Process the com_file command.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_comment" title="pylook.io.XlookParser.command_comment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_comment</span></code></a>(command)</p></td>
+<td><p>Process a comment line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_ec" title="pylook.io.XlookParser.command_ec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_ec</span></code></a>(command)</p></td>
+<td><p>Perform a linear elastic correction of a column.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_invalid" title="pylook.io.XlookParser.command_invalid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_invalid</span></code></a>(command)</p></td>
+<td><p>Process an invalid command.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_math" title="pylook.io.XlookParser.command_math"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_math</span></code></a>(command)</p></td>
+<td><p>Perform math operations with columns of data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_math_int" title="pylook.io.XlookParser.command_math_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_math_int</span></code></a>(command)</p></td>
+<td><p>Perform a math operation on an interval of a column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_offset_int" title="pylook.io.XlookParser.command_offset_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_offset_int</span></code></a>(command)</p></td>
+<td><p>Perform an offset over an interval in the data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_power" title="pylook.io.XlookParser.command_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_power</span></code></a>(command)</p></td>
+<td><p>Compute a column raised to a power.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_r_col" title="pylook.io.XlookParser.command_r_col"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_r_col</span></code></a>(command)</p></td>
+<td><p>Remove a given column by setting it to empty and the name/units to None.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_r_row" title="pylook.io.XlookParser.command_r_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_r_row</span></code></a>(command)</p></td>
+<td><p>Remove a range of rows from all columns of data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_read" title="pylook.io.XlookParser.command_read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_read</span></code></a>(command[, …])</p></td>
+<td><p>Read a binary file in for processing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_summation" title="pylook.io.XlookParser.command_summation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_summation</span></code></a>(command)</p></td>
+<td><p>Compute the cumulative sum of a column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.command_zero" title="pylook.io.XlookParser.command_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_zero</span></code></a>(command)</p></td>
+<td><p>Zero a column at a record.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.doit" title="pylook.io.XlookParser.doit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doit</span></code></a>(rfile[, endianness])</p></td>
+<td><p>Run an r-file - naming directly from XLook itself for ease of learning for new users.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pylook.io.XlookParser.get_data_dict" title="pylook.io.XlookParser.get_data_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_data_dict</span></code></a>([data_units, ignore_unknown_units])</p></td>
+<td><p>Format the data into a dictionary of quantity arrays.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pylook.io.XlookParser.parse_line" title="pylook.io.XlookParser.parse_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_line</span></code></a>(line)</p></td>
+<td><p>Parse the text in an xlook command and execute the appropriate function.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt id="pylook.io.XlookParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the parser with 32 empty columns to match the Look data model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_begin">
+<code class="sig-name descname">command_begin</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_begin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the begin command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The begin command, while essential in XLook is simply ignored here. It denoted the
+start of the file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_com_file">
+<code class="sig-name descname">command_com_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_com_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the com_file command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The command com_file is ignored here, but indicated that this was a command file
+to XLook.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_comment">
+<code class="sig-name descname">command_comment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a comment line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In XLook, comments are simply ignored, but this function is provided should we find
+the need to log, or otherwise process them (potentially even for metadata extraction).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_ec">
+<code class="sig-name descname">command_ec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_ec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a linear elastic correction of a column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is not unit safe like the pure Python version would be as we’re shedding units
+all around in the interpreter. The XLook command was <cite>ec displacement_column_number
+load_column_number new_column_number first_row_index last_row_index</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_invalid">
+<code class="sig-name descname">command_invalid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process an invalid command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Issue a warning for invalid commands, but we keep going just like XLook did. Xlook
+printed a console message, but they were mostly ignored by users, the warning should
+at least grab attention.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_math">
+<code class="sig-name descname">command_math</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_math" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform math operations with columns of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The XLook command is <cite>math x_col_number operator y_col_number type new_col_number</cite>
+where the operator can be *, /, +, or -. Type indicates if the operation is between
+two columns (element-wise calculation) if : or if the operation is between a column
+and a scalar if =.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_math_int">
+<code class="sig-name descname">command_math_int</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_math_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a math operation on an interval of a column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is math_int x_col_number operator y_col_number type new_col_number
+first_row_index last_row_index`</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_offset_int">
+<code class="sig-name descname">command_offset_int</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_offset_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an offset over an interval in the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is <cite>offset_int column_number record_start_index record_end_index
+(y or n) to offset in between during the offset.</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_power">
+<code class="sig-name descname">command_power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a column raised to a power.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is <cite>power power_value column_number new_column_number</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_r_col">
+<code class="sig-name descname">command_r_col</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_r_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a given column by setting it to empty and the name/units to None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is <cite>r_col column_number</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_r_row">
+<code class="sig-name descname">command_r_row</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_r_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a range of rows from all columns of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is <cite>r_row column_number first_row_index last_row_index</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_read">
+<code class="sig-name descname">command_read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em>, <em class="sig-param"><span class="n">path_relative_to_r_file</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">endianness</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a binary file in for processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str</em>) – command from r file</p></li>
+<li><p><strong>path_relative_to_r_file</strong> (<em>boolean</em>) – Determines if the path to be read is relative to the r file as xlook did or if
+it is relative to the calling Python code. Default True.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is <cite>read filename</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_summation">
+<code class="sig-name descname">command_summation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_summation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the cumulative sum of a column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The XLook command is <cite>summation column_number new_column_number</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.command_zero">
+<code class="sig-name descname">command_zero</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.command_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zero a column at a record.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>command</strong> (<em>str</em>) – command from r file</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Xlook command is <cite>zero column_number record_index</cite>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="pylook.calc.zero.html#pylook.calc.zero" title="pylook.calc.zero"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pylook.calc.zero()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.doit">
+<code class="sig-name descname">doit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rfile</span></em>, <em class="sig-param"><span class="n">endianness</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.doit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run an r-file - naming directly from XLook itself for ease of learning for new users.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rfile</strong> (<em>str</em>) – Path to r file to run</p></li>
+<li><p><strong>endianness</strong> (<em>str</em>) – None, little, or big. Defaults to None which lets the reader try to determine this,
+but can be forced if needed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.get_data_dict">
+<code class="sig-name descname">get_data_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_units</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ignore_unknown_units</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.get_data_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the data into a dictionary of quantity arrays.</p>
+<p>Create a data dict like the rest of pylook uses and attach user given units.
+If we get no user given units we try to parse what we have in Xlook and either
+error (default) or can assign unitless to everything that is unrecognized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_units</strong> (<em>list</em>) – List of quantities for each data column. Overwrites and units from the file
+metadata.</p></li>
+<li><p><strong>ignore_unknown_units</strong> (<em>boolean</em>) – If True any units from the file metadata that we cannot parse are set to
+dimensionless and a warning issued. If False (default) an error is raised.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>data</strong> (<em>dict</em>) – Dictionary of quantity arrays</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pylook.io.XlookParser.parse_line">
+<code class="sig-name descname">parse_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.XlookParser.parse_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the text in an xlook command and execute the appropriate function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>line</strong> (<em>str</em>) – Xlook command line to process</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="examples-using-pylook-io-xlookparser">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">pylook.io.XlookParser</span></code><a class="headerlink" href="#examples-using-pylook-io-xlookparser" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Experiment p655 was run in 2005 by Mckiernan, Rathbun, and Rowe. It was reduced by Chris Marone..."><div class="figure align-default" id="id1">
+<img alt="Running the P655 Reduction File" src="../../_images/sphx_glr_p655_run_r_file_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/p655_run_r_file.html#sphx-glr-examples-p655-run-r-file-py"><span class="std std-ref">Running the P655 Reduction File</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pylook.calc.html" class="btn btn-neutral float-right" title="pylook.calc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pylook.io.read_binary.html" class="btn btn-neutral float-left" title="read_binary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Leeman Geophysical LLC
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

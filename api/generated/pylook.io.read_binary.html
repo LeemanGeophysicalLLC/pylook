@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>read_binary &mdash; pylook 0.0.post63 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="XlookParser" href="pylook.io.XlookParser.html" />
+    <link rel="prev" title="pylook.io" href="pylook.io.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pylook
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pylook.units.html">units</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pylook.io.html">pylook.io</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">read_binary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-pylook-io-read-binary">Examples using <code class="docutils literal notranslate"><span class="pre">pylook.io.read_binary</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pylook.io.XlookParser.html">XlookParser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pylook.calc.html">pylook.calc</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pylook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
+        
+          <li><a href="pylook.io.html">pylook.io</a> &raquo;</li>
+        
+      <li>read_binary</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/pylook.io.read_binary.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="read-binary">
+<h1>read_binary<a class="headerlink" href="#read-binary" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pylook.io.read_binary">
+<code class="sig-prename descclassname">pylook.io.</code><code class="sig-name descname">read_binary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">data_endianness</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">unrecognized_units</span><span class="o">=</span><span class="default_value">'ignore'</span></em>, <em class="sig-param"><span class="n">clean_header</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.io.read_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a look binary formatted file into a dictionary of united arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Filename or path to file to read</p></li>
+<li><p><strong>data_endianness</strong> (<em>string</em>) – Endianness of the data section of the file. None, ‘big’, or ‘little’.
+None interprets the file as it believes fit, big and little force the
+endianness.</p></li>
+<li><p><strong>unrecogized_units</strong> (<em>string</em>) – ‘ignore’ (defualt) assigns dimensionless to unrecognized units, ‘error’ will
+fail if unrecognized units are encountered.</p></li>
+<li><p><strong>clean_header</strong> (<em>boolean</em>) – Remove extra whitespace in the header data column names and units. Default True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – Dictionary of <cite>pint.Quantity</cite> arrays for each column of data.</p></li>
+<li><p><strong>metadata</strong> (<em>dict</em>) – Metadata from the header of the file</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The data section of the file is written in the native format of the machine
+used to produce the file.  Endianness of data is little by default, but may
+be changed to ‘big’ to accomodate older files or files written on power pc
+chips.</p>
+</dd></dl>
+
+<div class="section" id="examples-using-pylook-io-read-binary">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">pylook.io.read_binary</span></code><a class="headerlink" href="#examples-using-pylook-io-read-binary" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Experiment p655 was run in 2005 by Mckiernan, Rathbun, and Rowe. It was reduced by Chris Marone..."><div class="figure align-default" id="id1">
+<img alt="Reducing p655 in Pure Python" src="../../_images/sphx_glr_p655_pure_python_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/p655_pure_python.html#sphx-glr-examples-p655-pure-python-py"><span class="std std-ref">Reducing p655 in Pure Python</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pylook.io.XlookParser.html" class="btn btn-neutral float-right" title="XlookParser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pylook.io.html" class="btn btn-neutral float-left" title="pylook.io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Leeman Geophysical LLC
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

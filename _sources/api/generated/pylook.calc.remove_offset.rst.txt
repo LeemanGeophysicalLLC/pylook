@@ -1,0 +1,12 @@
+remove_offset
+=========================
+
+.. currentmodule:: pylook.calc
+
+.. autofunction:: remove_offset
+
+.. include:: pylook.calc.remove_offset.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

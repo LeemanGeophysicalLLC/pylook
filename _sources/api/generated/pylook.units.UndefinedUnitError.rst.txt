@@ -1,0 +1,12 @@
+UndefinedUnitError
+===============================
+
+.. currentmodule:: pylook.units
+
+.. autoexception:: UndefinedUnitError
+
+.. include:: pylook.units.UndefinedUnitError.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

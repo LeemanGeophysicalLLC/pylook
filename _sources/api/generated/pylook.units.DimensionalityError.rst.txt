@@ -1,0 +1,12 @@
+DimensionalityError
+================================
+
+.. currentmodule:: pylook.units
+
+.. autoexception:: DimensionalityError
+
+.. include:: pylook.units.DimensionalityError.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

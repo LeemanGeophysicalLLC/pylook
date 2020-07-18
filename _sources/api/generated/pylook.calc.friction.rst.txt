@@ -1,0 +1,12 @@
+friction
+====================
+
+.. currentmodule:: pylook.calc
+
+.. autofunction:: friction
+
+.. include:: pylook.calc.friction.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,36 @@
+
+
+pylook.io
+=========
+
+.. automodule:: pylook.io
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      read_binary
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      XlookParser
+
+   
+   
+
+   
+   
+   
+

@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>elastic_correction &mdash; pylook 0.0.post63 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="friction" href="pylook.calc.friction.html" />
+    <link rel="prev" title="pylook.calc" href="pylook.calc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pylook
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pylook.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylook.io.html">pylook.io</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pylook.calc.html">pylook.calc</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">elastic_correction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-pylook-calc-elastic-correction">Examples using <code class="docutils literal notranslate"><span class="pre">pylook.calc.elastic_correction</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pylook.calc.friction.html">friction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pylook.calc.remove_offset.html">remove_offset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pylook.calc.zero.html">zero</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pylook</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
+        
+          <li><a href="pylook.calc.html">pylook.calc</a> &raquo;</li>
+        
+      <li>elastic_correction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/pylook.calc.elastic_correction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="elastic-correction">
+<h1>elastic_correction<a class="headerlink" href="#elastic-correction" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="pylook.calc.elastic_correction">
+<code class="sig-prename descclassname">pylook.calc.</code><code class="sig-name descname">elastic_correction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">load</span></em>, <em class="sig-param"><span class="n">displacement</span></em>, <em class="sig-param"><span class="n">coeffs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pylook.calc.elastic_correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an elastic correction on a single axis of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>load</strong> (<cite>pint.Quantity</cite>) – Load/Force data</p></li>
+<li><p><strong>displacement</strong> (<cite>pint.Quantity</cite>) – Displacement data</p></li>
+<li><p><strong>coeffs</strong> (<em>list</em>) – list of coefficients from highest power to lowest.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>displacement</strong> (<cite>pint.Quantity</cite>) – Displacement with the elastic correction applied</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="examples-using-pylook-calc-elastic-correction">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">pylook.calc.elastic_correction</span></code><a class="headerlink" href="#examples-using-pylook-calc-elastic-correction" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Experiment p655 was run in 2005 by Mckiernan, Rathbun, and Rowe. It was reduced by Chris Marone..."><div class="figure align-default" id="id1">
+<img alt="Reducing p655 in Pure Python" src="../../_images/sphx_glr_p655_pure_python_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/p655_pure_python.html#sphx-glr-examples-p655-pure-python-py"><span class="std std-ref">Reducing p655 in Pure Python</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pylook.calc.friction.html" class="btn btn-neutral float-right" title="friction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pylook.calc.html" class="btn btn-neutral float-left" title="pylook.calc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Leeman Geophysical LLC
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
