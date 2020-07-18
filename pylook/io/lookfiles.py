@@ -882,3 +882,52 @@ class XlookParser:
             self._set_data_by_index(i, data_col.m)
             self._set_name_by_index(i, name)
             self._set_units_by_index(i, str(data_col.units))
+
+    def get_data_dict(self, data_units=None, ignore_unknown_units=False):
+        """
+        Format the data into a dictionary of quantity arrays.
+
+        Create a data dict like the rest of pylook uses and attach user given units.
+        If we get no user given units we try to parse what we have in Xlook and either
+        error (default) or can assign unitless to everything that is unrecognized.
+
+        Parameters
+        ----------
+        data_units : list
+            List of quantities for each data column. Overwrites and units from the file
+            metadata.
+        ignore_unknown_units : boolean
+            If True any units from the file metadata that we cannot parse are set to
+            dimensionless and a warning issued. If False (default) an error is raised.
+
+        Returns
+        -------
+        data : dict
+            Dictionary of quantity arrays
+        """
+        # If units are not given, let's try to parse what we got from the units the user
+        # gave Xlook.
+        if data_units is None:
+            data_units = self.data_units
+
+        d = {}
+        for i, (name, unit) in enumerate(zip(self.data_names, data_units)):
+
+            # If there's nothing here, just to go to the next column
+            if (name is None) and (unit is None):
+                continue
+
+            # XLook users commonly used a . for dimensionless
+            if unit == '.':
+                unit = 'dimensionless'
+
+            try:
+                d[name] = self.data[i] * units(unit)
+            except UndefinedUnitError:
+                if ignore_unknown_units:
+                    d[name] = self.data[i] * units('dimensionless')
+                    warnings.warn(f'Unknown unit {unit} for data {name}'
+                                  ' was assigned dimensionless')
+                else:
+                    raise UndefinedUnitError(unit)
+        return d
