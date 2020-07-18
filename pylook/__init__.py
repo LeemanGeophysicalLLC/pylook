@@ -12,3 +12,7 @@ if sys.version_info < (3,):
         You are running Python 2 which is a no longer supported version of Python and not
         compatible with pylook.
         """)
+
+from ._version import get_version  # noqa: E402
+__version__ = get_version()
+del get_version

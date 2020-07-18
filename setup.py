@@ -4,13 +4,17 @@
 
 """Setup script for pylook."""
 
-from distutils.core import setup
+import sys
 
-setup(
-    name='pylook',
-    version='0.1dev',
-    packages=['pylook', ],
-    license='MIT',
-    long_description=('Provides tools to reduce and analyze data from experimental'
-                      ' rock mechanics laboratories.'),
-)
+from setuptools import setup
+
+if sys.version_info[0] < 3:
+    error = """
+    pylook requires Python 3.6 or greater!
+    Python {py} detected.
+    """.format(py='.'.join([str(v) for v in sys.version_info[:3]]))
+
+    print(error)  # noqa: T001
+    sys.exit(1)
+
+setup(use_scm_version={'version_scheme': 'post-release'})

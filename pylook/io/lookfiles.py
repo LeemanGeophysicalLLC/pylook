@@ -62,6 +62,9 @@ def read_binary(filename, data_endianness=None, unrecognized_units='ignore',
     be changed to 'big' to accomodate older files or files written on power pc
     chips.
     """
+    if type(filename) == str:
+        filename = Path(filename)
+
     if data_endianness is None:
         data_endianness = 'little'
 

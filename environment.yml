@@ -9,6 +9,7 @@ channels:
 dependencies:
   - python=3
   - numpy
+  - pooch
   - matplotlib
   - jupyter
   - pytest>=2.4
@@ -29,3 +30,4 @@ dependencies:
   - jupyterlab
   - pint
   - bokeh
+  - setuptools_scm

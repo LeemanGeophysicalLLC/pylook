@@ -1,0 +1,91 @@
+begin
+com_file
+
+read example/p655intact100l
+
+
+# Ran two slabs of Ghost Rocks from Kodiak Alaska, collected by Rowe/McKiernan
+# 62 mm load cells
+
+#run 23 May 2005, McKiernan, Rathbun, C. Rowe
+#reduced 23 May 2005, cjm
+
+# LabView stores time in column 1. Move that to column 5 and move
+# everything else up 
+math 1 * 1 = 6 Samp_period msec
+math 2 * 1 = 1 Vert_disp bit
+math 3 * 1 = 2 Vert_load bit
+math 4 * 1 = 3 Hor_disp bit
+math 5 * 1 = 4 Hor_load bit
+math 6 / 10000 = 5 Samp_period sec
+summation 5 5 Time sec
+r_col 6
+
+#contact area 5 x 5  cm surfaces: (New small block)
+
+# latest calibration are in ~cjm/data/biax/calibrations
+# Change from bit values to eng. units
+# See calibrations file for conversions
+math 1 * 0.076472 = 1 LP_disp micron
+math 2 * 1.597778959e-3  = 2  Shear_stress MPa
+math 3 *  0.11017176 = 3      nor_disp micron
+math 4 * 3.31712805707e-3 = 4  Nor_stress MPa
+
+#remove weird spike...
+offset_int 2 4075 4089 y
+
+# correct for elastic stretch of horizontal frame
+ec 3 4 6 0 -1 0.1480  disp_cor micron
+math 6 * 1.0 = 3 nor_disp micron
+r_col 6
+
+# recording starts before load is brought on
+# set zero normal stress
+zero 4,42
+# wipe out any noise before normal stress comes on
+math_int 4 * 0.0 = 4 0 42 Nor_stress MPa
+#so that we don't have zero anywhere when we divide by nor.stress to get mu
+math_int 4 + 1e-7 = 4 0 -1 Nor_stress MPa
+
+#set init points to init layer thick
+offset_int 3 0 42 y
+
+# this is the point at which the blocks started sliding
+
+zero 1,1459
+zero 2,1459
+
+#zero 3,xx use layer thickness measure at normal stress.
+zero 4,64
+
+math_int 1 * 0.0 = 1 0 1459 LP_disp micron
+math_int 2 * 0.0 = 2 0 1459 Shear_stress MPa
+
+#Remove dcdt offsets
+offset_int 1 18593 19058 y
+offset_int 1 66262 67830 y
+
+# double shear experiment, 
+# treat H. disp as symmetric, take half of it for 1 layer.
+# Change sign so that compaction = thinner layer
+# This block is 89.2 mm on bench with no gouge.
+# layer thickness is roughly 4mm  
+math 3 * -0.500 = 3 d d
+zero 3 42
+math 3 + 4000 = 3 layer_thick. micron
+
+ec 1 2 8 0 -1 0.1 ec_disp mic 
+strain 8 3 7 0 -1 shear_str .
+
+#calc mu, i.e. shear_stress/normal_stress
+math 2 / 4 : 6 mu .
+
+#weird (?) normal stress has a zero at 86283
+#ax it
+r_row 86283 86283
+
+#do this to remove zero sig_n and mu=inf. 
+math_int 6 * 0.0 = 6 0 1459 mu .
+math_int 6 * 0.0 = 6 85413 -1 mu .
+
+end
