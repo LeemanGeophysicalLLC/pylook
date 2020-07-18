@@ -19,9 +19,8 @@ First we import a few things so we can get at the test data and we import the xl
 object.
 """
 ##############################
-from pathlib import Path
-from pylook.io import XlookParser
 from pylook.cbook import get_test_data
+from pylook.io import XlookParser
 
 ##############################
 # We use pooch to get test data when you run this notebook for the first time, so you won't
@@ -63,7 +62,6 @@ d = look.get_data_dict(ignore_unknown_units=True)
 
 ##############################
 # Import our unit registry and fix up the bad units to microns as they should have been.
-
 from pylook.units import units
 
 # Fix up that bad unit name
@@ -76,9 +74,9 @@ d['ec_disp'] = d['ec_disp'] * units('micron')
 
 # We need to do some imports from bokeh and turn on the notebook backend.
 
-from bokeh.layouts import gridplot, row, column
-from bokeh.plotting import figure, output_file, show
 from bokeh.io import output_notebook
+from bokeh.layouts import gridplot
+from bokeh.plotting import figure, show
 
 output_notebook()
 
@@ -87,25 +85,27 @@ output_notebook()
 # but demonstrates how to make a flexible plotting function instead of copying and pasting a
 # bunch of code over and over again.
 
-def make_runplot(data, x_var='Time', y_vars=None, tools='pan,wheel_zoom,box_zoom,reset,save,box_select,hover'):
+
+def make_runplot(data, x_var='Time', y_vars=None,
+                 tools='pan,wheel_zoom,box_zoom,reset,save,box_select,hover'):
     plots = []
     for col_name in list(data):
         if col_name == x_var:
             continue
         if y_vars and (col_name not in y_vars):
             continue
-        
+
         # First plot is simple, the rest we share the x range with the first
         if plots == []:
             p = figure(title=col_name, tools=tools)
         else:
             p = figure(title=col_name, tools=tools, x_range=plots[0].x_range)
-        
+
         # Plot the data and set the labels
         p.xaxis.axis_label = str(data[x_var].units)
         p.yaxis.axis_label = str(data[col_name].units)
         p.line(data[x_var].m, data[col_name].m)
-        
+
         plots.append(p)
     show(gridplot(plots, ncols=1, plot_width=600, plot_height=175))
 
@@ -114,7 +114,9 @@ def make_runplot(data, x_var='Time', y_vars=None, tools='pan,wheel_zoom,box_zoom
 # ones. Hover over the graph to see the values! That can be turned off by clicking the message
 # bubble icon in the plot toolbar. If we don't specify, data are plotted with respect to time.
 
+
 make_runplot(d, y_vars=['Shear_stress', 'Nor_stress'])
+
 
 ##############################
 # We can specify to plot relative to another x variable though - with load point displacement

@@ -23,12 +23,12 @@ r file format.
 Let's start out with some imports to get rolling.
 """
 
-from pathlib import Path
-from pylook.units import units
+import numpy as np
+
 import pylook.calc as lc
 from pylook.cbook import get_test_data
 from pylook.io import read_binary
-import numpy as np
+from pylook.units import units
 
 ##############################
 
@@ -97,7 +97,8 @@ print(normal_stiffness.to('micron/MPa'))  # To just displays things in units tha
 # you'd like. Just like `np.polyval` we expect coefficients from the highest order to lowest.
 # Units matter!
 
-data['Normal Displacement'] = lc.elastic_correction(data['Normal Stress'], data['Normal Displacement'],
+data['Normal Displacement'] = lc.elastic_correction(data['Normal Stress'],
+                                                    data['Normal Displacement'],
                                                     [normal_stiffness, 0 * units('micron')])
 
 ##############################
@@ -106,9 +107,9 @@ data['Normal Displacement'] = lc.elastic_correction(data['Normal Stress'], data[
 # number at which we want to zero things. The `.m` after the data is a way to drop units
 # (the magnitude) and is required as currently bokeh does not play well with units.
 
-from bokeh.plotting import figure, show
 from bokeh.io import output_notebook
-from bokeh.layouts import gridplot, row, column
+from bokeh.layouts import gridplot
+from bokeh.plotting import figure, show
 
 output_notebook()
 
@@ -159,8 +160,10 @@ show(p)
 # Looks like we had two offsets - rows 18593 to 19058 and rows 66262 to 67830.
 # Let's remove those and set the values between to the final value to that data look nice.
 
-data['Shear Displacement'] = lc.remove_offset(data['Shear Displacement'], 18593, 19058, set_between=True)
-data['Shear Displacement'] = lc.remove_offset(data['Shear Displacement'], 66262, 67830, set_between=True)
+data['Shear Displacement'] = lc.remove_offset(data['Shear Displacement'],
+                                              18593, 19058, set_between=True)
+data['Shear Displacement'] = lc.remove_offset(data['Shear Displacement'],
+                                              66262, 67830, set_between=True)
 
 ##############################
 # For the normal displacement we assume that half of it is in each of the two layers of a
@@ -190,25 +193,27 @@ data['Friction'] = lc.friction(data['Shear Stress'], data['Normal Stress'])
 # but demonstrates how to make a flexible plotting function instead of copying and pasting a
 # bunch of code over and over again.
 
-def make_runplot(data, x_var='Time', y_vars=None, tools='pan,wheel_zoom,box_zoom,reset,save,box_select,hover'):
+
+def make_runplot(data, x_var='Time', y_vars=None,
+                 tools='pan,wheel_zoom,box_zoom,reset,save,box_select,hover'):
     plots = []
     for col_name in list(data):
         if col_name == x_var:
             continue
         if y_vars and (col_name not in y_vars):
             continue
-        
+
         # First plot is simple, the rest we share the x range with the first
         if plots == []:
             p = figure(title=col_name, tools=tools)
         else:
             p = figure(title=col_name, tools=tools, x_range=plots[0].x_range)
-        
+
         # Plot the data and set the labels
         p.xaxis.axis_label = str(data[x_var].units)
         p.yaxis.axis_label = str(data[col_name].units)
         p.line(data[x_var].m, data[col_name].m)
-        
+
         plots.append(p)
     show(gridplot(plots, ncols=1, plot_width=600, plot_height=175))
 
@@ -217,7 +222,9 @@ def make_runplot(data, x_var='Time', y_vars=None, tools='pan,wheel_zoom,box_zoom
 # ones. Hover over the graph to see the values! That can be turned off by clicking the message
 # bubble icon in the plot toolbar. If we don't specify, data are plotted with respect to time.
 
+
 make_runplot(data, y_vars=['Shear Stress', 'Normal Stress'])
+
 
 ##############################
 # We can specify to plot relative to another x variable though - with load point displacement
