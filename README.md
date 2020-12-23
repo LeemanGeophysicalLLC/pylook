@@ -11,9 +11,7 @@ number like 0.a.b it means that a is a feature release and b is a bug fix only r
 We only support Python 3 and you should too! It's not hard to switch from Python 2, has
 massive performance improvements, and is regularly updated.
 
-Contributing
-------------
-
+## Contributing
 **Imposter syndrome disclaimer**: We want your help. No, really.
 
 There may be a little voice inside your head that is telling you that you're not ready to be
@@ -34,8 +32,7 @@ eyes, so you can see the errors and assumptions that seasoned contributors have 
 
 For more information, please read the see the [contributing guide](https://github.com/leemangeophysicalllc/pylook/blob/master/CONTRIBUTING.md).
 
-Philosophy
-----------
+## Philosophy
 Data processing should have an audit trail - what did you do to the raw data to get to where
 you are when the data are published? This not only helps find and eliminate and errors, but
 also allows others in the future to reprocess the data with new techniques or query the raw
@@ -55,15 +52,13 @@ What about your legacy files? Don't worry, your "r files" (short for reduction f
 still work. You can still run the old experiments in the modern tools, but with the idea that
 new experiments can be reduced in pure Python. We have provided examples of both!
 
-What Can't PyLook Do?
----------------------
+## What Can't PyLook Do
 Quite a bit actually. We've got the basics for simple double direct shear experiments and a
 few other functions, but there is plenty to do. We need to implement the rest of the XLook
 syntax commands and continue to add more functionality! Rate and state inversion is also
 high on the list.
 
-Thank You
----------
+## Thank You
 A big thank you to Unidata's Python team for much of the excellent contributing and README
 text templates and for their efforts to maintain the scientific Python stack. All projects
 benefit from standing on the shoulders of these and the many other tireless volunteers and
